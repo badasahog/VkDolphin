@@ -148,6 +148,8 @@ struct Mesh {
     alignas(32)float x;
     alignas(32)float y;
     alignas(32)float z;
+    std::vector<Vertex> vertices;
+    std::vector<uint32_t> indices;
    std::string filePath;
 };
 
@@ -1186,6 +1188,10 @@ private:
             m.startIndex = indices.size();
             m.vertOffset = vertices.size();
             loadModel(&m);
+
+            indices.insert( indices.end(),  m.indices.begin(),  m.indices.end());
+            vertices.insert(vertices.end(), m.vertices.begin(), m.vertices.end());
+
             m.num_indices = indices.size() - m.startIndex;
             objects.push_back(m);
         }
@@ -1208,9 +1214,9 @@ private:
                 Vertex vertex{};
 
                 vertex.pos = {
-                    attrib.vertices[3 * index.vertex_index + 0],
-                    attrib.vertices[3 * index.vertex_index + 1],
-                    attrib.vertices[3 * index.vertex_index + 2]
+                    attrib.vertices[3 * index.vertex_index + 0] + m->x,
+                    attrib.vertices[3 * index.vertex_index + 1] + m->y,
+                    attrib.vertices[3 * index.vertex_index + 2] + m->z 
                 };
 
                 vertex.texCoord = {
@@ -1221,11 +1227,11 @@ private:
                 vertex.color = { 1.0f, 1.0f, 1.0f };
 
                 if (uniqueVertices.count(vertex) == 0) {
-                    uniqueVertices[vertex] = static_cast<uint32_t>(vertices.size());
-                    vertices.push_back(vertex);
+                    uniqueVertices[vertex] = static_cast<uint32_t>(m->vertices.size());
+                    m->vertices.push_back(vertex);
                 }
 
-                indices.push_back(uniqueVertices[vertex]);
+                m->indices.push_back(uniqueVertices[vertex]);
             }
         }
         
@@ -1531,8 +1537,8 @@ private:
 
         UniformBufferObject ubo{};
         ubo.model = glm::rotate(glm::mat4(1.0f), time * glm::radians(90.0f), glm::vec3(0.0f, 0.0f, 1.0f));
-        ubo.view = glm::lookAt(glm::vec3(5.0f, 5.0f, 5.0f), glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(0.0f, 0.0f, 1.0f));
-        ubo.proj = glm::perspective(glm::radians(45.0f), swapChainExtent.width / (float)swapChainExtent.height, 0.1f, 10.0f);
+        ubo.view = glm::lookAt(glm::vec3(5.0f, 25.0f, 5.0f), glm::vec3(0.0f, 0.0f, 5.0f), glm::vec3(0.0f, 0.0f, 1.0f));
+        ubo.proj = glm::perspective(glm::radians(45.0f), swapChainExtent.width / (float)swapChainExtent.height, 0.1f, 40.0f);
         ubo.proj[1][1] *= -1;
 
         void* data;
