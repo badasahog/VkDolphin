@@ -1213,11 +1213,20 @@ private:
             for (const auto& index : shape.mesh.indices) {
                 Vertex vertex{};
 
-                vertex.pos = {
-                    attrib.vertices[3 * index.vertex_index + 0] + m->x,
-                    attrib.vertices[3 * index.vertex_index + 1] + m->y,
-                    attrib.vertices[3 * index.vertex_index + 2] + m->z 
-                };
+                glm::vec3 inputPosition = glm::vec3(
+                    attrib.vertices[3 * index.vertex_index + 0],
+                    attrib.vertices[3 * index.vertex_index + 1],
+                    attrib.vertices[3 * index.vertex_index + 2]
+                );
+
+                // Apply rotation to correct for incorrect Blender model export
+                glm::mat4 rotmat = glm::rotate(glm::mat4(1.0f), glm::radians(90.0f), glm::vec3(1.0f, 0.0f, 0.0f));
+
+                // Define per object offsets
+                glm::vec3 offset = glm::vec3(m->x, m->y, m->z);
+
+                // Final vertex position
+                vertex.pos = glm::vec3(rotmat * glm::vec4(inputPosition, 1.0)) + offset;
 
                 vertex.texCoord = {
                     attrib.texcoords[2 * index.texcoord_index + 0],
@@ -1537,7 +1546,8 @@ private:
 
         UniformBufferObject ubo{};
         ubo.model = glm::rotate(glm::mat4(1.0f), time * glm::radians(90.0f), glm::vec3(0.0f, 0.0f, 1.0f));
-        ubo.view = glm::lookAt(glm::vec3(5.0f, 25.0f, 5.0f), glm::vec3(0.0f, 0.0f, 5.0f), glm::vec3(0.0f, 0.0f, 1.0f));
+        // NOTE: z-coord is specified as up direction because this is how the model was exported from Blender
+        ubo.view = glm::lookAt(glm::vec3(5.0f, 30.0f, 7.0f), glm::vec3(0.0f, 0.0f, 7.0f), glm::vec3(0.0f, 0.0f, 1.0f));
         ubo.proj = glm::perspective(glm::radians(45.0f), swapChainExtent.width / (float)swapChainExtent.height, 0.1f, 40.0f);
         ubo.proj[1][1] *= -1;
 
