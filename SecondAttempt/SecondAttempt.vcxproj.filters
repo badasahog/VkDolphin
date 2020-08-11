@@ -1,0 +1,139 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="Source Files">
+      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
+      <Extensions>cpp;c;cc;cxx;c++;def;odl;idl;hpj;bat;asm;asmx</Extensions>
+    </Filter>
+    <Filter Include="Header Files">
+      <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
+      <Extensions>h;hh;hpp;hxx;h++;hm;inl;inc;ipp;xsd</Extensions>
+    </Filter>
+    <Filter Include="Resource Files">
+      <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
+      <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
+    </Filter>
+    <Filter Include="Source Files\shaders">
+      <UniqueIdentifier>{3fde4320-b96b-4245-a8e2-682f1ade2148}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\textures">
+      <UniqueIdentifier>{f12d621f-fcc6-4f14-9a02-28492bff052b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\models">
+      <UniqueIdentifier>{8bebf097-d8e4-49ab-89a8-5b2ce9620ea1}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="main.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="shaders\shader.frag">
+      <Filter>Source Files\shaders</Filter>
+    </None>
+    <None Include="shaders\shader.vert">
+      <Filter>Source Files\shaders</Filter>
+    </None>
+    <None Include="shaders\compile.bat">
+      <Filter>Source Files\shaders</Filter>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <Image Include="textures\texture.jpg">
+      <Filter>Source Files\textures</Filter>
+    </Image>
+    <Image Include="textures\viking_room.png">
+      <Filter>Source Files\textures</Filter>
+    </Image>
+    <Image Include="textures\Arms.png">
+      <Filter>Source Files\textures</Filter>
+    </Image>
+    <Image Include="textures\Bandage.png">
+      <Filter>Source Files\textures</Filter>
+    </Image>
+    <Image Include="textures\Bandage2.png">
+      <Filter>Source Files\textures</Filter>
+    </Image>
+    <Image Include="textures\Buckles.png">
+      <Filter>Source Files\textures</Filter>
+    </Image>
+    <Image Include="textures\Eyebrows.png">
+      <Filter>Source Files\textures</Filter>
+    </Image>
+    <Image Include="textures\EyeL.png">
+      <Filter>Source Files\textures</Filter>
+    </Image>
+    <Image Include="textures\EyelidL.png">
+      <Filter>Source Files\textures</Filter>
+    </Image>
+    <Image Include="textures\EyelidR.png">
+      <Filter>Source Files\textures</Filter>
+    </Image>
+    <Image Include="textures\EyeR.png">
+      <Filter>Source Files\textures</Filter>
+    </Image>
+    <Image Include="textures\EyeShine.png">
+      <Filter>Source Files\textures</Filter>
+    </Image>
+    <Image Include="textures\FingersToes.png">
+      <Filter>Source Files\textures</Filter>
+    </Image>
+    <Image Include="textures\GoggleMetal.png">
+      <Filter>Source Files\textures</Filter>
+    </Image>
+    <Image Include="textures\GoggleMetal2.png">
+      <Filter>Source Files\textures</Filter>
+    </Image>
+    <Image Include="textures\Hair.png">
+      <Filter>Source Files\textures</Filter>
+    </Image>
+    <Image Include="textures\Hair2.png">
+      <Filter>Source Files\textures</Filter>
+    </Image>
+    <Image Include="textures\HairShine.png">
+      <Filter>Source Files\textures</Filter>
+    </Image>
+    <Image Include="textures\Headlegs.png">
+      <Filter>Source Files\textures</Filter>
+    </Image>
+    <Image Include="textures\Lens.png">
+      <Filter>Source Files\textures</Filter>
+    </Image>
+    <Image Include="textures\Metal.png">
+      <Filter>Source Files\textures</Filter>
+    </Image>
+    <Image Include="textures\MetalShine.png">
+      <Filter>Source Files\textures</Filter>
+    </Image>
+    <Image Include="textures\Pants.png">
+      <Filter>Source Files\textures</Filter>
+    </Image>
+    <Image Include="textures\Pouch.png">
+      <Filter>Source Files\textures</Filter>
+    </Image>
+    <Image Include="textures\Shirt.png">
+      <Filter>Source Files\textures</Filter>
+    </Image>
+    <Image Include="textures\Shirt2.png">
+      <Filter>Source Files\textures</Filter>
+    </Image>
+    <Image Include="textures\Straps.png">
+      <Filter>Source Files\textures</Filter>
+    </Image>
+    <Image Include="textures\Straps2.png">
+      <Filter>Source Files\textures</Filter>
+    </Image>
+    <Image Include="textures\Straps3.png">
+      <Filter>Source Files\textures</Filter>
+    </Image>
+    <Image Include="textures\Teeth.png">
+      <Filter>Source Files\textures</Filter>
+    </Image>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="AssetLoader.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+  </ItemGroup>
+</Project>
