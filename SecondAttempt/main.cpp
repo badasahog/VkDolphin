@@ -36,7 +36,63 @@ const uint32_t WIDTH = 800;
 const uint32_t HEIGHT = 600;
 
 //const std::string MODEL_PATH = "";
-const std::vector<std::string> images = { "textures/strip_1.png","textures/strip_2.png" };
+const std::vector<std::string> images = {
+    "textures/ss_0.png",
+    "textures/ss_1.png",
+    "textures/ss_black.png",
+    "textures/ss_blue.png",
+    "textures/ss_blue_green.png",
+    "textures/ss_canopy.png",
+    "textures/ss_dark_blue.png",
+    "textures/ss_dark_red.png",
+    "textures/ss_glass.png",
+    "textures/ss_green.png",
+    "textures/ss_grey.png",
+    "textures/ss_lgb.png",
+    "textures/ss_light_blue.png",
+    "textures/ss_light_green.png",
+    "textures/ss_meter_G.png",
+    "textures/ss_meter_O.png",
+    "textures/ss_meter_Y.png",
+    "textures/ss_outer_light_blue.png",
+    "textures/ss_pbh.png",
+    "textures/ss_red.png",
+    "textures/ss_red_orange.png",
+    "textures/ss_ship_interior.png",
+    "textures/ss_ship_seat.png",
+    "textures/ss_ship_wheel.png",
+    "textures/ss_vanilla.png",
+    "textures/ss_vanilla.png.001.png",
+    "textures/ss_yellow.png",
+    "textures/ss_yro.png",
+    "textures/strip_1.png",
+    "textures/strip_2.png",
+    "textures/strip_3.png",
+    "textures/strip_4.png",
+    "textures/strip_5.png",
+    "textures/strip_6.png",
+    "textures/strip_7.png",
+    "textures/ss_0.png",
+    "textures/ss_1.png",
+    "textures/ss_0.png",
+    "textures/ss_1.png",
+    "textures/ss_0.png",
+    "textures/ss_1.png",
+    "textures/ss_0.png",
+    "textures/ss_1.png",
+    "textures/ss_0.png",
+    "textures/ss_1.png",
+    "textures/ss_0.png",
+    "textures/ss_1.png",
+    "textures/ss_0.png",
+    "textures/ss_1.png",
+    "textures/ss_0.png",
+    "textures/ss_1.png",
+    "textures/ss_0.png",
+    "textures/ss_1.png",
+    "textures/ss_0.png",
+    "textures/ss_1.png",
+};
 const std::string LEVEL_PATH = "models/ssdolphin/lvl.dat";
 
 const int MAX_FRAMES_IN_FLIGHT = 2;
@@ -54,7 +110,7 @@ const bool enableValidationLayers = false;
 #else
 const bool enableValidationLayers = true;
 #endif
-
+uint8_t jfielfjeafj = 0;
 VkResult CreateDebugUtilsMessengerEXT(VkInstance instance, const VkDebugUtilsMessengerCreateInfoEXT* pCreateInfo, const VkAllocationCallbacks* pAllocator, VkDebugUtilsMessengerEXT* pDebugMessenger) {
     auto func = (PFN_vkCreateDebugUtilsMessengerEXT)vkGetInstanceProcAddr(instance, "vkCreateDebugUtilsMessengerEXT");
     if (func != nullptr) {
@@ -91,7 +147,7 @@ struct Vertex {
     glm::vec3 pos;
     glm::vec3 color;
     glm::vec2 texCoord;
-
+    uint32_t textureIndex;
     static VkVertexInputBindingDescription getBindingDescription() {
         VkVertexInputBindingDescription bindingDescription{};
         bindingDescription.binding = 0;
@@ -101,8 +157,8 @@ struct Vertex {
         return bindingDescription;
     }
 
-    static std::array<VkVertexInputAttributeDescription, 3> getAttributeDescriptions() {
-        std::array<VkVertexInputAttributeDescription, 3> attributeDescriptions{};
+    static std::array<VkVertexInputAttributeDescription, 4> getAttributeDescriptions() {
+        std::array<VkVertexInputAttributeDescription, 4> attributeDescriptions{};
 
         attributeDescriptions[0].binding = 0;
         attributeDescriptions[0].location = 0;
@@ -118,6 +174,11 @@ struct Vertex {
         attributeDescriptions[2].location = 2;
         attributeDescriptions[2].format = VK_FORMAT_R32G32_SFLOAT;
         attributeDescriptions[2].offset = offsetof(Vertex, texCoord);
+
+        attributeDescriptions[3].binding = 0;
+        attributeDescriptions[3].location = 3;
+        attributeDescriptions[3].format = VK_FORMAT_R32_UINT;
+        attributeDescriptions[3].offset = offsetof(Vertex, textureIndex);
 
         return attributeDescriptions;
     }
@@ -660,7 +721,7 @@ private:
 
         VkDescriptorSetLayoutBinding samplerLayoutBinding{};
         samplerLayoutBinding.binding = 1;
-        samplerLayoutBinding.descriptorCount = 1;
+        samplerLayoutBinding.descriptorCount = images.size();
         samplerLayoutBinding.descriptorType = VK_DESCRIPTOR_TYPE_COMBINED_IMAGE_SAMPLER;
         samplerLayoutBinding.pImmutableSamplers = nullptr;
         samplerLayoutBinding.stageFlags = VK_SHADER_STAGE_FRAGMENT_BIT;
@@ -738,7 +799,7 @@ private:
         rasterizer.rasterizerDiscardEnable = VK_FALSE;
         rasterizer.polygonMode = VK_POLYGON_MODE_FILL;
         rasterizer.lineWidth = 1.0f;
-        rasterizer.cullMode = VK_CULL_MODE_BACK_BIT;
+        rasterizer.cullMode = VK_CULL_MODE_NONE;
         rasterizer.frontFace = VK_FRONT_FACE_COUNTER_CLOCKWISE;
         rasterizer.depthBiasEnable = VK_FALSE;
 
@@ -1211,51 +1272,106 @@ private:
     }
     void loadModel(Mesh *m) {
         tinyobj::attrib_t attrib;
-        std::vector<tinyobj::shape_t> shapes;
-        std::vector<tinyobj::material_t> materials;
-        std::string warn, err;
+        //std::vector<tinyobj::shape_t> shapes;
+        //std::vector<tinyobj::material_t> materials;
+        //std::string warn, err;
 
-        if (!tinyobj::LoadObj(&attrib, &shapes, &materials, &warn, &err, m->filePath.c_str())) {
-            throw std::runtime_error(warn + err);
-        }
+        //if (!tinyobj::LoadObj(&attrib, &shapes, &materials, &warn, &err, m->filePath.c_str())) {
+         //   throw std::runtime_error(warn + err);
+        //}
+
+
+
+        std::ifstream infile(m->filePath);
+
+
+
 
         std::unordered_map<Vertex, uint32_t> uniqueVertices{};
+        std::vector<double> VXS;
+        std::vector<double> VYS;
+        std::vector<double> VZS;
+        std::vector<double> TXS;
+        std::vector<double> TYS;
+        std::vector<uint8_t> TIDX;
 
-        for (const auto& shape : shapes) {
-            for (const auto& index : shape.mesh.indices) {
+        while (!infile.eof())
+        {
+            char line[128];
+            infile.getline(line,128);
+
+            std::strstream s;
+            s << line;
+            char junk;
+            if (line[0] == 'v' && line[1]=='t')
+            {
+                float a, b;
+                s >> junk >> a >> b;
+                TXS.push_back(a);
+                TYS.push_back(b);
+            }
+            else if (line[0] == 'v' && line[1] == 'n') {}//I don't care about normals
+            else if (line[0] == 'v') {
+                float a, b, c;
+
+                s >> junk >> a >> b >> c;
+
+                VXS.push_back(a);
+                VYS.push_back(b);
+                VZS.push_back(c);
+            }
+            else if (line[0] == 'f')
+            {
+                //std::cout << VXS.size() << std::endl;
+                //std::cout << VYS.size() << std::endl;
+                //std::cout << VZS.size() << std::endl;
                 Vertex vertex{};
 
-                glm::vec3 inputPosition = glm::vec3(
-                    attrib.vertices[3 * index.vertex_index + 0],
-                    attrib.vertices[3 * index.vertex_index + 1],
-                    attrib.vertices[3 * index.vertex_index + 2]
-                );
+                int v[3], t[3], n[3];
+                int ti;
+                s >> junk >> v[0] >> t[0] >> n[0] >> v[1] >> t[1] >> n[1] >> v[2] >> t[2] >> n[2] >> ti;
 
-                // Apply rotation to correct for incorrect Blender model export
-                glm::mat4 rotmat = glm::rotate(glm::mat4(1.0f), glm::radians(90.0f), glm::vec3(1.0f, 0.0f, 0.0f));
+                for (size_t vnum = 0; vnum < 3; vnum++) {
+                    // access to vertex
+                    //tinyobj::index_t idx = shape.mesh.indices[index_offset + v];
+                    glm::vec3 inputPosition = glm::vec3(
+                        VXS[v[vnum]-1],
+                        VYS[v[vnum]-1],
+                        VZS[v[vnum]-1]
+                    );
+                    if(VXS.size()==61)
+                        std::cout << VXS[v[vnum] - 1] << ", " << VYS[v[vnum] - 1] << ", " << VZS[v[vnum] - 1]<< std::endl;
+                    // Apply rotation to correct for incorrect Blender model export
+                    glm::mat4 rotmat = glm::rotate(glm::mat4(1.0f), glm::radians(90.0f), glm::vec3(1.0f, 0.0f, 0.0f));
 
-                // Define per object offsets
-                glm::vec3 offset = glm::vec3(m->x, m->y, m->z);
+                    // Define per object offsets
+                    glm::vec3 offset = glm::vec3(m->x, m->y, m->z);
 
-                // Final vertex position
-                vertex.pos = glm::vec3(rotmat * glm::vec4(inputPosition, 1.0)) + offset;
 
-                vertex.texCoord = {
-                    attrib.texcoords[2 * index.texcoord_index + 0],
-                    1.0f - attrib.texcoords[2 * index.texcoord_index + 1]
-                };
 
-                vertex.color = { 1.0f, 1.0f, 1.0f };
+                    // Final vertex position
+                    vertex.pos = glm::vec3(rotmat * glm::vec4(inputPosition, 1.0)) + offset;
 
-                if (uniqueVertices.count(vertex) == 0) {
-                    uniqueVertices[vertex] = static_cast<uint32_t>(m->vertices.size());
-                    m->vertices.push_back(vertex);
+                    vertex.textureIndex = ti;
+                    //std::cout << "vertex.textureIndex = " << vertex.textureIndex << std::endl;
+
+                    vertex.texCoord = {
+                        TXS[t[vnum]-1],
+                        1.0f - TYS[t[vnum]-1]
+                    };
+                    vertex.color = { 1.0f, 1.0f, 1.0f };
+
+                    if (uniqueVertices.count(vertex) == 0) {
+                        uniqueVertices[vertex] = static_cast<uint32_t>(m->vertices.size());
+                        m->vertices.push_back(vertex);
+                    }
+
+                    m->indices.push_back(uniqueVertices[vertex]);
                 }
 
-                m->indices.push_back(uniqueVertices[vertex]);
+                
             }
         }
-        
     }
 
     void createVertexBuffer() {
@@ -1314,7 +1430,7 @@ private:
         poolSizes[0].type = VK_DESCRIPTOR_TYPE_UNIFORM_BUFFER;
         poolSizes[0].descriptorCount = static_cast<uint32_t>(swapChainImages.size());
         poolSizes[1].type = VK_DESCRIPTOR_TYPE_COMBINED_IMAGE_SAMPLER;
-        poolSizes[1].descriptorCount = static_cast<uint32_t>(swapChainImages.size());
+        poolSizes[1].descriptorCount = static_cast<uint32_t>(swapChainImages.size() * images.size());
 
         VkDescriptorPoolCreateInfo poolInfo{};
         poolInfo.sType = VK_STRUCTURE_TYPE_DESCRIPTOR_POOL_CREATE_INFO;
@@ -1346,10 +1462,15 @@ private:
             bufferInfo.offset = 0;
             bufferInfo.range = sizeof(UniformBufferObject);
 
-            VkDescriptorImageInfo imageInfo{};
-            imageInfo.imageLayout = VK_IMAGE_LAYOUT_SHADER_READ_ONLY_OPTIMAL;
-            imageInfo.imageView = imageStuffs.at(0).textureImageView;
-            imageInfo.sampler = imageStuffs.at(0).textureSampler;
+            std::vector<VkDescriptorImageInfo> imageInfo;
+            imageInfo.resize(images.size());
+            for (int x = 0; x < images.size(); x++) {
+                imageInfo[x] = {};
+                imageInfo[x].imageLayout = VK_IMAGE_LAYOUT_SHADER_READ_ONLY_OPTIMAL;
+                imageInfo[x].imageView = imageStuffs.at(x).textureImageView;
+                imageInfo[x].sampler = imageStuffs.at(x).textureSampler;
+            }
+            
 
             std::array<VkWriteDescriptorSet, 2> descriptorWrites{};
 
@@ -1366,8 +1487,9 @@ private:
             descriptorWrites[1].dstBinding = 1;
             descriptorWrites[1].dstArrayElement = 0;
             descriptorWrites[1].descriptorType = VK_DESCRIPTOR_TYPE_COMBINED_IMAGE_SAMPLER;
-            descriptorWrites[1].descriptorCount = 1;
-            descriptorWrites[1].pImageInfo = &imageInfo;
+            descriptorWrites[1].descriptorCount = images.size();
+            descriptorWrites[1].pImageInfo = &imageInfo[0];
+
 
             vkUpdateDescriptorSets(device, static_cast<uint32_t>(descriptorWrites.size()), descriptorWrites.data(), 0, nullptr);
         }
